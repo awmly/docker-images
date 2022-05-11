@@ -1,0 +1,41 @@
+#!/bin/bash
+
+cp /build/ws-server.js /build-ro/ws-server.js
+cp /build/ws-send.js /build-ro/ws-send.js
+
+# node
+size1=($(md5sum /build/package.json))
+size2=($(md5sum /build-ro/package.json))
+
+if [ "$size1" != "$size2" ]; then
+
+  cp /build/package.json /build-ro/package.json
+
+  npm install --verbose
+
+  cp /build-ro/package-lock.json /build/package-lock.json
+
+fi
+
+# composer
+size1=($(md5sum /build/composer.json))
+size2=($(md5sum /build-ro/composer.json))
+
+if [ "$size1" != "$size2" ]; then
+
+  cp /build/composer.json /build-ro/composer.json
+
+  composer update --verbose
+
+  cp /build-ro/composer.lock /build/composer.lock
+
+fi
+
+# move node libs
+sh /build/npm-post-install
+
+# start livereload server
+nohup node /build-ro/ws-server.js > /dev/null 2>&1 &
+
+npm run build
+npm run watch

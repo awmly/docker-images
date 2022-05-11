@@ -1,0 +1,7 @@
+#! /bin/bash
+
+npm install --verbose
+
+npm run download
+npm run build
+npm run watch

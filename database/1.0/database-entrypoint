@@ -1,0 +1,32 @@
+#! /bin/bash
+
+# set mysql env variables for the local env
+export MYSQL_ROOT_PASSWORD=base
+export MYSQL_DATABASE=$LOCAL_MYSQL_DATABASE
+export MYSQL_USER=$LOCAL_MYSQL_USER
+export MYSQL_PASSWORD=$LOCAL_MYSQL_PASSWORD
+
+
+# create production conf file
+echo "[client]" > /database/production.cnf
+echo "user = ${PRODUCTION_MYSQL_USER}" >> /database/production.cnf
+echo "password = ${PRODUCTION_MYSQL_PASSWORD}" >> /database/production.cnf
+
+
+# create staging conf file
+echo "[client]" > /database/staging.cnf
+echo "user = ${STAGING_MYSQL_USER}" >> /database/staging.cnf
+echo "password = ${STAGING_MYSQL_PASSWORD}" >> /database/staging.cnf
+
+
+# create local conf file
+echo "[client]" > /database/local.cnf
+echo "user = ${LOCAL_MYSQL_USER}" >> /database/local.cnf
+echo "password = ${LOCAL_MYSQL_PASSWORD}" >> /database/local.cnf
+
+
+# add init
+bash /database/init &
+
+# load mysql default entry point
+/usr/local/bin/docker-entrypoint.sh mysqld

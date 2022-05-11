@@ -1,0 +1,13 @@
+#!/bin/bash
+
+npm install --verbose
+composer update --verbose
+
+# move node libs
+sh /build/npm-post-install
+
+# start livereload server
+nohup node /build-ro/ws-server.js > /dev/null 2>&1 &
+
+npm run build
+npm run watch

@@ -1,0 +1,18 @@
+#! /bin/bash
+
+METHOD="$1"
+IMAGE="$2"
+TAG="$3"
+
+if [ "$METHOD" = "build" ]; then
+
+  # base build <image> <tag>
+  docker build -t base-${IMAGE}:${TAG} -f ${IMAGE}/${TAG}/${IMAGE}.dockerfile ${IMAGE}/${TAG}/
+
+elif [ "$METHOD" = "push" ]; then
+
+  # base push <image> <tag>
+  docker tag base-${IMAGE}:${TAG} apld/base-${IMAGE}:${TAG}
+  docker push apld/base-${IMAGE}:${TAG}
+
+fi
