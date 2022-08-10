@@ -1,5 +1,6 @@
 {
     "workbench.colorTheme": "Monokai",
     "git.enableSmartCommit": true,
-    "git.confirmSync": false
+    "git.confirmSync": false,
+    "workbench.startupEditor": "none"
 }
